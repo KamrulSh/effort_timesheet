@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id='view_effort_timesheet_tree' model='ir.ui.view'>
+        <field name='name'>effort.timesheet.tree</field>
+        <field name='model'>effort.timesheet</field>
+        <field name='arch' type='xml'>
+            <tree>
+                <field name='project_id'/>
+                <field name='employee_id'/>
+                <field name='start_time'/>
+                <field name='end_time'/>
+                <field name='duration'/>
+            </tree>
+        </field>
+    </record>
+
+    <record id='view_effort_timesheet_form' model='ir.ui.view'>
+        <field name='name'>effort.timesheet.form</field>
+        <field name='model'>effort.timesheet</field>
+        <field name='arch' type='xml'>
+            <form>
+                <sheet>
+                    <group>
+                        <field name='project_id'/>
+                        <field name='employee_id'/>
+                        <field name='start_time'/>
+                        <field name='end_time'/>
+                        <field name='duration'/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id='view_effort_timesheet_search' model='ir.ui.view'>
+        <field name='name'>effort.timesheet.search</field>
+        <field name='model'>effort.timesheet</field>
+        <field name='arch' type='xml'>
+            <search>
+                <field name='project_id'/>
+                <field name='employee_id'/>
+                <field name='start_time'/>
+                <field name='end_time'/>
+                <field name='duration'/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_effort_timesheet_calendar" model="ir.ui.view">
+        <field name="name">effort.timesheet.calendar</field>
+        <field name="model">effort.timesheet</field>
+        <field name="arch" type="xml">
+            <calendar string="Timesheet Calendar"
+                      date_start="start_time"
+                      date_stop="end_time"
+                      event_open_popup="true"
+                      mode="month"
+                      color="project_id"
+                      quick_add="False">
+                <field name='project_id'/>
+                <field name='employee_id'/>
+                <field name='start_time'/>
+                <field name='end_time'/>
+                <field name='duration'/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id='action_effort_timesheet' model='ir.actions.act_window'>
+        <field name='name'>Effort management</field>
+        <field name='res_model'>effort.timesheet</field>
+        <field name='view_mode'>calendar,tree,form</field>
+    </record>
+
+    <menuitem
+            id='menu_effort_timesheet'
+            action='action_effort_timesheet'
+            name='Work Effort Timesheet'/>
+</odoo>
