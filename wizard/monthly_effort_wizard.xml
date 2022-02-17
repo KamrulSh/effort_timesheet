@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="monthly_effort_form" model="ir.ui.view">
+        <field name="name">monthly.effort.form</field>
+        <field name="model">monthly.effort.wizard</field>
+        <field name='arch' type='xml'>
+            <form string="Monthly Effort" create="false" edit="false" class="project-dashboard-form">
+                <group>
+                    <field name="project_id"/>
+                    <field name="employee_id"/>
+                    <field name="effort_month"/>
+                    <field name="monthly_report"/>
+                </group>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="action_monthly_effort" model="ir.actions.act_window">
+        <field name="name">Monthly Effort</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">monthly.effort.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="monthly_effort_form"/>
+        <field name="target">inline</field>
+    </record>
+
+    <menuitem id="action_monthly_effort_menu"
+              parent="menu_effort_timesheet"
+              name="Monthly Effort"
+              action="action_monthly_effort"/>
+</odoo>
