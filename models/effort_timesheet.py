@@ -6,11 +6,14 @@ class EffortTimesheet(models.Model):
     _name = 'effort.timesheet'
     _description = 'Here effort timesheet information is stored.'
 
+    def _get_employee_id(self):
+        return self.env.user.employee_id
+
     project_id = fields.Many2one('project.project', required=True)
-    employee_id = fields.Many2one('hr.employee', required=True)
+    employee_id = fields.Many2one('hr.employee', string="Employee", default=_get_employee_id, required=True)
     start_time = fields.Datetime("Start Time", default=fields.Datetime.now(), required=True)
     end_time = fields.Datetime("End Time", required=True)
-    duration = fields.Float("Duration", readonly=True)
+    duration = fields.Float("Duration")
 
     # def onchange_start_time(self):
     #     # self.start_time = fields.Datetime.from_string(self.start_time)

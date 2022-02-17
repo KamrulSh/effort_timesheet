@@ -7,10 +7,10 @@
         <field name='arch' type='xml'>
             <form string="Monthly Effort" create="false" edit="false" class="project-dashboard-form">
                 <group>
-                    <field name="project_id"/>
                     <field name="employee_id"/>
+                    <field name="project_id"/>
                     <field name="effort_month"/>
-                    <field name="monthly_report"/>
+                    <field name="monthly_report" readonly="1"/>
                 </group>
 
             </form>
