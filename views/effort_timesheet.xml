@@ -55,7 +55,7 @@
                       date_start="start_time"
                       date_stop="end_time"
                       event_open_popup="true"
-                      mode="week"
+                      mode="month"
                       scales="day,week,month"
                       color="project_id"
                       quick_add="False">
