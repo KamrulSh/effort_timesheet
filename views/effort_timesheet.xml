@@ -55,7 +55,8 @@
                       date_start="start_time"
                       date_stop="end_time"
                       event_open_popup="true"
-                      mode="month"
+                      mode="week"
+                      scales="day,week,month"
                       color="project_id"
                       quick_add="False">
                 <field name='employee_id'/>
