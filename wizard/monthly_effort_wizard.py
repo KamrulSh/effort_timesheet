@@ -19,8 +19,9 @@ class MonthlyEffort(models.TransientModel):
     # effort_month = fields.Date("Month", default=fields.Datetime.now(), required=True)
     month = fields.Selection([("1", 'January'), ("2", 'February'), ("3", 'March'), ("4", 'April'),
                               ("5", 'May'), ("6", 'June'), ("7", 'July'), ("8", 'August'), ("9", 'September'),
-                              ("10", 'October'), ("11", 'November'), ("12", 'December')], default="2")
-    year = fields.Selection(get_years(), string='Year', default="2022")
+                              ("10", 'October'), ("11", 'November'), ("12", 'December')],
+                             default=str(fields.Datetime.now().month), readonly=True)
+    year = fields.Selection(get_years(), string='Year', default=str(fields.Datetime.now().year), readonly=True)
     monthly_report = fields.Html("Monthly Effort")
 
     def month_effort_query(self):
