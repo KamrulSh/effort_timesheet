@@ -1,8 +1,7 @@
-from odoo import models, fields, api
-from datetime import datetime, timedelta
-from datetime import datetime, date, timedelta, time
+from datetime import datetime, time
 from dateutil.rrule import rrule, DAILY
-from pytz import timezone, UTC
+from odoo import models, fields, api
+from pytz import UTC
 
 
 class EffortTimesheet(models.Model):
@@ -18,6 +17,12 @@ class EffortTimesheet(models.Model):
     start_time = fields.Datetime("Start Time", default=fields.Datetime.now(), required=True)
     end_time = fields.Datetime("End Time", required=True)
     duration = fields.Float("Duration")
+    combination = fields.Char(string='Combination', compute='_compute_fields_combination')
+
+    @api.depends('project_id', 'duration')
+    def _compute_fields_combination(self):
+        for rec in self:
+            rec.combination = rec.project_id.name + ' (' + str(rec.duration) + ' hours)'
 
     @api.onchange('start_time', 'end_time')
     def calculate_date(self):
@@ -29,8 +34,7 @@ class EffortTimesheet(models.Model):
 
     @api.model
     def get_unusual_days(self, start_time, end_time=None):
-        # Checking the calendar directly allows to not grey out the leaves taken
-        # by the employee
+        # Checking the calendar directly allows to not grey out the leaves taken by the employee
         calendar = self.env.user.employee_id.resource_calendar_id
         if not calendar:
             return {}
@@ -38,11 +42,10 @@ class EffortTimesheet(models.Model):
         dto = datetime.combine(fields.Date.from_string(end_time), time.max).replace(tzinfo=UTC)
 
         works = {d[0].date() for d in calendar._work_intervals_batch(dfrom, dto)[False]}
-        return {fields.Date.to_string(day.date()): (day.date() not in works) for day in rrule(DAILY, dfrom, until=dto)}
+        all_days = {fields.Date.to_string(day.date()): (day.date() not in works) for day in
+                    rrule(DAILY, dfrom, until=dto)}
+        public_holidays = self.env["hr.holidays.public.line"].search([])
+        for public_holiday in public_holidays:
+            all_days[fields.Date.to_string(public_holiday.date)] = True
 
-    combination = fields.Char(string='Combination', compute='_compute_fields_combination')
-
-    @api.depends('project_id', 'duration')
-    def _compute_fields_combination(self):
-        for test in self:
-            test.combination = test.project_id.name + ' (' + str(test.duration) + ' hours)'
+        return all_days
