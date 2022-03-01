@@ -40,9 +40,12 @@ class EffortTimesheet(models.Model):
             return {}
         dfrom = datetime.combine(fields.Date.from_string(start_time), time.min).replace(tzinfo=UTC)
         dto = datetime.combine(fields.Date.from_string(end_time), time.max).replace(tzinfo=UTC)
-
-        works = {d[0].date() for d in calendar._work_intervals_batch(dfrom, dto)[False]}
-        all_days = {fields.Date.to_string(day.date()): (day.date() not in works) for day in
+        weekends = self.env["resource.calendar.attendance"].search([('calendar_id', '=', calendar.id)])
+        dayofweek = set()
+        for weekend in weekends:
+            dayofweek.add(int(weekend.dayofweek))
+        # works = {d[0].date() for d in calendar._work_intervals_batch(dfrom, dto)[False]}
+        all_days = {fields.Date.to_string(day.date()): day.weekday() not in dayofweek for day in
                     rrule(DAILY, dfrom, until=dto)}
         public_holidays = self.env["hr.holidays.public.line"].search([])
         for public_holiday in public_holidays:
