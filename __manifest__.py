@@ -6,7 +6,7 @@
     'author': 'Kamrul and Niazi',
     'category': 'Human Resources',
     'description': 'This is an application where employee can save daily work effort and calculate total effort in a timesheet.',
-    'depends': ['base', 'hr', 'project'],
+    'depends': ['base', 'hr', 'project','hr_holidays_public'],
     'data': [
         'security/ir.model.access.csv',
         'views/effort_timesheet.xml',
